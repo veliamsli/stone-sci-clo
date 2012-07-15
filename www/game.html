@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>stone-sci-clo</title>
+<link rel="stylesheet" href="../static/style.css" />
+<script type="text/javascript" src="../static/jquery.js"></script>
+<script type="text/javascript">
+jQuery(function($) { // start of jQuery() block
+
+function click_handler(ev) {
+    ev.preventDefault();
+    $("div#curtain").css("z-index", 99).fadeTo(400, 0.51);
+    $.post("attack", {'attack': $(this).attr("id")}, got_result, "json");
+}
+
+function got_result(data) {
+    $("div#curtain").stop();
+    $("div#curtain").css("opacity", 0).css("z-index", -1);
+    var results = $("<li><span>Outcome: " + data['result'] +
+        " You: " + data['your-attack'] +
+        " They: " + data['their-attack'] + "</span></li>");
+    results.css("display", "none");
+    $("#results").append(results);
+    results.children("span").addClass("highlight");
+    results.show().fadeOut(1000, function() { 
+        $(this).children("span").removeClass("highlight");
+        $(this).show() 
+    });
+    window.scroll(window.scrollX, document.height);
+}
+
+$("#commands a.play").each(function(i) {
+    $(this).click(click_handler);
+});
+
+}); // end of jQuery() block
+</script>
+</head>
+<body>
+<div id=curtain></div>
+<div id=sidebar>
+  <div id=command_bar>
+  <div id=commands>
+  Play:
+  <a href="" class=play id=stone>stone</a>
+  <a href="" class=play id=sci>sci</a>
+  <a href="" class=play id=cloth>cloth</a>
+  </div>
+ </div>
+</div>
+<div id="container">
+ <h1>stone-sci-clo</h1>
+ Copy the url of this <a href="">page</a> and send it to a friend!
+ <ol id=results></ol>
+ <div id="footer-spacer"></div>   
+</div>
+<div id="footer">
+ <a href="https://github.com/veliamsli/stone-sci-clo">https://github.com/veliamsli/stone-sci-clo</a>
+</div>
+</body>
+</html>

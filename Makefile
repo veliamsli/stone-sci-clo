@@ -6,23 +6,24 @@ ERL_OBJ := $(patsubst src/%.erl, ebin/%.beam, ${ERL_SRC})
 default:
 	@echo 'use the rebar tool'
 
-all: main mochiweb ebin/sta-sci-clo.app
+all: main mochiweb ebin/stone_sci_clo.app
 
 main: ebin/ ${ERL_OBJ}
 
 ebin/:
-	@mkdir -p ebin
+	mkdir -p ebin
 
 ebin/%.app: src/%.app.src
 	cp $< $@
 
 ebin/%.beam: src/%.erl
-	erlc -o 'dirname $@' $<
+	erlc -o `dirname $@` $<
 
 mochiweb:
 	(cd deps/mochiweb && make)
 
 clean:
+	rm *.beam
 	rm -rf ebin/
 	rm -rf erl_crash.dump
 
